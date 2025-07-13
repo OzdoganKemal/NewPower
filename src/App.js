@@ -346,7 +346,7 @@ const Header = () => {
             {isLangDropdownOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-20 transition-all duration-300 transform origin-top scale-95 opacity-0 animate-dropdown-open">
                 {Object.keys(languageOptions).map(langCode => (
-                    <a href="#" key={langCode} onClick={(e) => {e.preventDefault(); setLanguage(langCode); setLangDropdownOpen(false);}} className={`flex items-center px-4 py-2 text-sm ${language === langCode ? 'font-bold text-blue-600' : 'text-gray-700'} hover:bg-blue-50`}>
+                    <a href="#!" key={langCode} onClick={(e) => {e.preventDefault(); setLanguage(langCode); setLangDropdownOpen(false);}} className={`flex items-center px-4 py-2 text-sm ${language === langCode ? 'font-bold text-blue-600' : 'text-gray-700'} hover:bg-blue-50`}>
                         {languageOptions[langCode].flag}
                         <span className="ml-3">{languageOptions[langCode].name}</span>
                     </a>
