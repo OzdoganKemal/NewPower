@@ -248,51 +248,6 @@ const Icon = ({ path, className = "w-6 h-6" }) => (
   </svg>
 );
 
-const AnimatedCounter = ({ to }) => {
-    const [count, setCount] = useState(0);
-    const ref = useRef(null);
-    const duration = 2000;
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    let start = 0;
-                    const end = to;
-                    if (start === end) return;
-
-                    let startTime = null;
-
-                    const animate = (currentTime) => {
-                        if (!startTime) startTime = currentTime;
-                        const progress = Math.min((currentTime - startTime) / duration, 1);
-                        setCount(Math.floor(progress * end));
-                        if (progress < 1) {
-                            requestAnimationFrame(animate);
-                        }
-                    };
-                    requestAnimationFrame(animate);
-                    observer.unobserve(ref.current);
-                }
-            },
-            { threshold: 0.5 }
-        );
-
-        if (ref.current) {
-            observer.observe(ref.current);
-        }
-
-        return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
-            }
-        };
-    }, [to]);
-
-    return <span ref={ref}>{count}</span>;
-};
-
-
 // --- Animation Hook ---
 const useFadeIn = (stagger = 0) => {
     const ref = useRef(null);
@@ -372,26 +327,26 @@ const Header = () => {
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <a href="#home" className="text-2xl font-bold text-slate-800">
           Kemal Ozdogan
-          <span className="block text-sm font-normal text-slate-600">IFS Consultant</span>
+          <span className="block text-sm font-normal text-blue-600">IFS Consultant</span>
         </a>
         
         <nav className="hidden md:flex items-center space-x-6">
           {navLinks.map(link => (
             <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-gray-600 font-medium relative group py-2">
               <span>{link.text}</span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </a>
           ))}
           
           <div className="relative" ref={langDropdownRef}>
-            <button onClick={() => setLangDropdownOpen(!isLangDropdownOpen)} className="flex items-center text-gray-600 hover:text-slate-800 font-medium transition-colors p-2 rounded-md">
+            <button onClick={() => setLangDropdownOpen(!isLangDropdownOpen)} className="flex items-center text-gray-600 hover:text-blue-600 font-medium transition-colors p-2 rounded-md">
               {languageOptions[language].flag}
               <Icon path="M19.5 8.25l-7.5 7.5-7.5-7.5" className="w-4 h-4 ml-2" />
             </button>
             {isLangDropdownOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-20 transition-all duration-300 transform origin-top scale-95 opacity-0 animate-dropdown-open">
                 {Object.keys(languageOptions).map(langCode => (
-                    <a href="#" key={langCode} onClick={(e) => {e.preventDefault(); setLanguage(langCode); setLangDropdownOpen(false);}} className={`flex items-center px-4 py-2 text-sm ${language === langCode ? 'font-bold text-slate-800' : 'text-gray-700'} hover:bg-slate-100`}>
+                    <a href="#" key={langCode} onClick={(e) => {e.preventDefault(); setLanguage(langCode); setLangDropdownOpen(false);}} className={`flex items-center px-4 py-2 text-sm ${language === langCode ? 'font-bold text-blue-600' : 'text-gray-700'} hover:bg-blue-50`}>
                         {languageOptions[langCode].flag}
                         <span className="ml-3">{languageOptions[langCode].name}</span>
                     </a>
@@ -401,7 +356,7 @@ const Header = () => {
           </div>
         </nav>
 
-        <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} className="hidden md:inline-block bg-slate-800 text-white font-semibold px-6 py-2 rounded-lg hover:bg-slate-900 transition-all duration-300 shadow-md hover:shadow-lg">
+        <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} className="hidden md:inline-block bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg">
           {t.getInTouch}
         </a>
 
@@ -416,9 +371,9 @@ const Header = () => {
         <div className="md:hidden bg-white shadow-lg absolute top-full left-0 w-full">
           <nav className="flex flex-col items-center p-4 space-y-2">
              {navLinks.map(link => (
-              <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="block w-full text-center py-2 text-gray-700 hover:bg-slate-100 rounded-md">{link.text}</a>
+              <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="block w-full text-center py-2 text-gray-700 hover:bg-blue-50 rounded-md">{link.text}</a>
             ))}
-             <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} className="w-full text-center bg-slate-800 text-white font-semibold px-6 py-2 rounded-lg hover:bg-slate-900 transition-all duration-300 mt-2">
+             <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} className="w-full text-center bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 mt-2">
               {t.getInTouch}
             </a>
           </nav>
@@ -434,7 +389,7 @@ const Hero = () => {
     return (
         <section id="home" className="relative bg-white py-20 md:py-32 overflow-hidden">
             <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)]"></div>
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-transparent to-slate-50"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-transparent to-slate-50"></div>
             <div ref={fadeInRef} className="container mx-auto px-6 text-center fade-in relative z-10">
             <div className="max-w-4xl mx-auto">
                 <h1 className="text-4xl md:text-6xl font-extrabold text-slate-800 mb-4 leading-tight">
@@ -444,10 +399,10 @@ const Hero = () => {
                 {t.heroSubtitle}
                 </p>
                 <div className="flex justify-center items-center space-x-4">
-                    <a href="#services" className="bg-slate-800 text-white font-bold py-3 px-8 rounded-full hover:bg-slate-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <a href="#services" className="bg-blue-600 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                     {t.exploreServices}
                     </a>
-                    <a href="#contact" className="bg-white text-slate-800 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-gray-200">
+                    <a href="#contact" className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-gray-200">
                     {t.contactMe}
                     </a>
                 </div>
@@ -467,12 +422,12 @@ const About = () => {
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <div className="order-2 md:order-1">
                         <h2 className="text-3xl font-bold text-slate-800 mb-4">{t.aboutTitle}</h2>
-                        <div className="w-24 h-1 bg-slate-500 mb-6"></div>
+                        <div className="w-24 h-1 bg-blue-500 mb-6"></div>
                         <p className="text-gray-600 mb-6">{t.aboutP1}</p>
                         <div className="space-y-4">
                             {t.aboutHighlights.map(highlight => (
                                 <div key={highlight.title} className="flex items-start">
-                                    <div className="flex-shrink-0 h-6 w-6 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mr-4 mt-1">
+                                    <div className="flex-shrink-0 h-6 w-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-4 mt-1">
                                         <Icon path="M4.5 12.75l6 6 9-13.5" className="w-4 h-4" />
                                     </div>
                                     <div>
@@ -513,7 +468,7 @@ const Process = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {t.processSteps.map((step, index) => (
                         <div key={step.title} className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 fade-in-child" style={{transitionDelay: `${300 + index * 100}ms`}}>
-                            <div className="mx-auto bg-slate-100 text-slate-600 w-20 h-20 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-inner">
+                            <div className="mx-auto bg-blue-100 text-blue-600 w-20 h-20 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-inner">
                                 <span className="text-3xl font-bold">{index + 1}</span>
                             </div>
                             <h3 className="text-xl font-bold text-slate-800 mb-2">{step.title}</h3>
@@ -564,11 +519,11 @@ const Services = () => {
                     </div>
                     {/* Functional Consultancy Column */}
                     <div className="bg-slate-50 p-8 rounded-xl shadow-lg flex flex-col hover:shadow-2xl transition-shadow duration-300">
-                        <h3 className="text-2xl font-semibold text-slate-600 mb-6 text-center">{t.services.functional.title}</h3>
+                        <h3 className="text-2xl font-semibold text-blue-600 mb-6 text-center">{t.services.functional.title}</h3>
                         <div className="space-y-8 flex-grow">
                             {t.services.functional.items.map((service, index) => (
                                 <div key={service.title} className="flex items-start space-x-4">
-                                     <div className="flex-shrink-0 bg-slate-100 text-slate-600 w-12 h-12 rounded-full flex items-center justify-center">
+                                     <div className="flex-shrink-0 bg-blue-100 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center">
                                         <Icon path={icons[index]} className="w-6 h-6" />
                                     </div>
                                     <div>
@@ -599,7 +554,7 @@ const Optimization = () => {
                 <div className="grid lg:grid-cols-3 gap-8 items-stretch">
                     {t.optimizationSteps.map((step, index) => (
                         <div key={step.title} className="bg-white rounded-xl shadow-lg p-8 flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 fade-in-child" style={{transitionDelay: `${300 + index * 100}ms`}}>
-                            <div className="flex-shrink-0 bg-slate-100 text-slate-600 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                            <div className="flex-shrink-0 bg-blue-100 text-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-6">
                                 <Icon path={step.icon} className="w-8 h-8" />
                             </div>
                             <h3 className="text-2xl font-bold text-slate-800 mb-4">{step.title}</h3>
@@ -687,25 +642,25 @@ const Contact = () => {
                         <h3 className="text-xl font-semibold text-slate-800 mb-2">{t.contactInfoTitle}</h3>
                         <p className="text-gray-600">{t.contactInfoSubtitle}</p>
                         <div className="flex items-center space-x-4 text-gray-700">
-                            <Icon path="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" className="w-6 h-6 text-slate-600" />
+                            <Icon path="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" className="w-6 h-6 text-blue-600" />
                             <span>kemalozdogann@gmail.com</span>
                         </div>
                         <div className="flex items-center space-x-4 text-gray-700">
-                            <Icon path="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" className="w-6 h-6 text-slate-600" />
+                            <Icon path="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" className="w-6 h-6 text-blue-600" />
                             <span>+90 530 260 16 62</span>
                         </div>
                     </div>
                     <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                        <input type="text" placeholder={t.formName} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500 transition" />
-                        <input type="email" placeholder={t.formEmail} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500 transition" />
-                        <input type="text" placeholder={t.formSubject} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500 transition" />
+                        <input type="text" placeholder={t.formName} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition" />
+                        <input type="email" placeholder={t.formEmail} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition" />
+                        <input type="text" placeholder={t.formSubject} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition" />
                         <div className="relative">
                             <textarea 
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 rows="5" 
                                 placeholder={t.formMessage} 
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500 transition"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition"
                             ></textarea>
                             {message && (
                                 <button 
@@ -717,7 +672,7 @@ const Contact = () => {
                                 </button>
                             )}
                         </div>
-                        <button type="submit" className="w-full bg-slate-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-slate-900 transition-all duration-300 shadow-md hover:shadow-lg">
+                        <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg">
                             {t.formButton}
                         </button>
                     </form>
@@ -773,7 +728,7 @@ const ScrollToTopButton = () => {
     return (
         <button
             onClick={scrollToTop}
-            className={`fixed bottom-8 right-8 bg-slate-800 text-white p-3 rounded-full shadow-lg hover:bg-slate-900 transition-all duration-300 z-50 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}
+            className={`fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 z-50 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}
         >
             <Icon path="M4.5 15.75l7.5-7.5 7.5 7.5" className="w-6 h-6" />
         </button>
